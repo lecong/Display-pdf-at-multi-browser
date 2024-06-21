@@ -67,7 +67,7 @@
         pdfDoc.getPage(num).then(function (/** @type {any} **/ page) {
           const canvas = document.createElement("canvas");
 
-          let viewport = page.getViewport({ scale: scale, rotation });
+          let viewport = page.getViewport({ scale: 1.0, rotation: 0 });
           const canvasContext = canvas.getContext("2d");
 
           // Support HiDPI-screens.
