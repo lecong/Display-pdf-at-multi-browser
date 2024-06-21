@@ -29,7 +29,7 @@
         Using pdfjs
       </h1>
 
-      <embed id="embedPdfViwer" class="w-full h-96" src="http://example.com/the.pdf" type="application/pdf" onerror="showFileWithPdfjs">
+      <embed id="embedPdfViwer" class="w-full h-96" src="/Display-pdf-at-multi-browser/assets/sample.pdf" type="application/pdf" onerror="showFileWithPdfjs">
       <iframe id="pdfjsViwerFrame" class="w-full h-96 hidden" src="js/pdfjs/web/viewer.html?file=/Display-pdf-at-multi-browser/assets/sample.pdf&pdfbug=all"></iframe>
     </section>
     <section class="py-4 md:py-6">
@@ -73,7 +73,7 @@
     function initGoogleViewer() {
       const googleViewer = document.getElementById('google-viewer');
       if (googleViewer) {
-        googleViewer.src = `https://docs.google.com/gview?${location.origin}/Display-pdf-at-multi-browser/assets/sample.pdf`;
+        googleViewer.src = `https://docs.google.com/gview?url=${location.origin}/Display-pdf-at-multi-browser/assets/sample.pdf`;
       }
     }
 
