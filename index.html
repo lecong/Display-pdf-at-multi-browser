@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Display pdf at multi browser version</title>
     <link rel="stylesheet" href="css/tailwind.min.css" />
+    <script>
+      function objectPdfViwerLoaded() {
+        console.log("objectPdfViwerLoaded");
+      }
+
+      function objectPdfViwerErrored() {
+        console.log("objectPdfViwerErrored");
+
+        const objectPdfViwer = document.getElementById("objectPdfViwer");
+        if (objectPdfViwer) {
+          objectPdfViwer.classList.add("hidden");
+        }
+        const pdfjsViwerFrame = document.getElementById("pdfjsViwerFrame");
+        if (pdfjsViwerFrame) {
+          pdfjsViwerFrame.classList.remove("hidden");
+        }
+      }
+    </script>
   </head>
 
   <body class="bg-gray-100">
@@ -99,23 +117,6 @@
       const googleViewer = document.getElementById("google-viewer");
       if (googleViewer) {
         googleViewer.src = `https://docs.google.com/viewer?url=${location.origin}/Display-pdf-at-multi-browser/assets/sample.pdf&embedded=true`;
-      }
-    }
-
-    function objectPdfViwerLoaded() {
-      console.log("objectPdfViwerLoaded");
-    }
-
-    function objectPdfViwerErrored() {
-      console.log("objectPdfViwerErrored");
-
-      const embedPdfViwer = document.getElementById("embedPdfViwer");
-      if (embedPdfViwer) {
-        embedPdfViwer.classList.add("hidden");
-      }
-      const pdfjsViwerFrame = document.getElementById("pdfjsViwerFrame");
-      if (pdfjsViwerFrame) {
-        pdfjsViwerFrame.classList.remove("hidden");
       }
     }
 
