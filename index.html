@@ -1,0 +1,60 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Display pdf at multi browser version</title>
+    <link rel="stylesheet" href="css/tailwind.min.css" />
+  </head>
+
+  <body class="bg-gray-100">
+    <section class="py-4 md:py-6">
+      <h1 class="font-medium text-gray-700 text-3xl md:text-4xl mb-1">
+        Using browser plugin
+      </h1>
+
+      <p id="browser-plugin-description" class="font-normal text-gray-500 text-xs md:text-base mb-6"></p>
+
+      <iframe class="w-full h-96" src="assets/sample.pdf"></iframe>
+    </section>
+    <section class="py-4 md:py-6">
+      <h1 class="font-medium text-gray-700 text-3xl md:text-4xl mb-1">
+        Using pdfjs
+      </h1>
+
+      <iframe class="w-full h-96" src="js/pdfjs/web/viewer.html?file=assets/sample.pdf"></iframe>
+    </section>
+  </body>
+  <script>
+    function checkBrowserSupportPdfViewerPlugin() {
+      let pdfViewerPlugin = "Browser does not support PDF Viewer Plugin";
+      if ("PDF Viewer" in navigator.plugins) {
+        pdfViewerPlugin = "Browser has PDF Viewer Plugin";
+      }
+      let pdfViewerEnabled = "Browser does not enable PDF Viewer";
+      if (navigator.pdfViewerEnabled) {
+        pdfViewerEnabled = "Browser enabled PDF Viewer";
+      }
+      const description = document.getElementById('browser-plugin-description');
+      if (description) {
+        description.innerHTML = `${pdfViewerPlugin}<br />${pdfViewerEnabled}`;
+      }
+    }
+
+    function onPageLoaded() {
+      checkBrowserSupportPdfViewerPlugin();
+    }
+
+    function waitingPageLoaded(callback) {
+      if (document.readyState === "loading") {
+        // Loading hasn't finished yet
+        document.addEventListener("DOMContentLoaded", callback);
+      } else {
+        // `DOMContentLoaded` has already fired
+        callback();
+      }
+    }
+
+    waitingPageLoaded(onPageLoaded);
+  </script>
+</html>
