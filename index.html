@@ -22,14 +22,15 @@
         Using Google viewer
       </h1>
 
-      <iframe class="w-full h-96" src="https://docs.google.com/gview?url=/Display-pdf-at-multi-browser/assets/sample.pdf"></iframe>
+      <iframe id="google-viewer" class="w-full h-96"></iframe>
     </section>
     <section class="py-4 md:py-6">
       <h1 class="font-medium text-gray-700 text-3xl md:text-4xl mb-1">
         Using pdfjs
       </h1>
 
-      <iframe class="w-full h-96" src="js/pdfjs/web/viewer.html?file=/Display-pdf-at-multi-browser/assets/sample.pdf&pdfbug=all"></iframe>
+      <embed id="embedPdfViwer" class="w-full h-96" src="http://example.com/the.pdf" type="application/pdf" onerror="showFileWithPdfjs">
+      <iframe id="pdfjsViwerFrame" class="w-full h-96 hidden" src="js/pdfjs/web/viewer.html?file=/Display-pdf-at-multi-browser/assets/sample.pdf&pdfbug=all"></iframe>
     </section>
     <section class="py-4 md:py-6">
       <h1 class="font-medium text-gray-700 text-3xl md:text-4xl mb-1">
@@ -69,8 +70,30 @@
       }
     }
 
+    function initGoogleViewer() {
+      const googleViewer = document.getElementById('google-viewer');
+      if (googleViewer) {
+        googleViewer.src = `https://docs.google.com/gview?${location.origin}/Display-pdf-at-multi-browser/assets/sample.pdf`;
+      }
+    }
+
+    function showFileWithPdfjs(e) {
+      console.log("showFileWithPdfjs", e);
+      
+      const embedPdfViwer = document.getElementById('embedPdfViwer');
+      if (embedPdfViwer) {
+        embedPdfViwer.classList.add("hidden");
+      }
+      const pdfjsViwerFrame = document.getElementById('pdfjsViwerFrame');
+      if (pdfjsViwerFrame) {
+        pdfjsViwerFrame.classList.remove("hidden");
+      }
+
+    }
+
     function onPageLoaded() {
       checkBrowserSupportPdfViewerPlugin();
+      initGoogleViewer();
     }
 
     function waitingPageLoaded(callback) {
