@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inline pdf viewer</title>
     <link rel="stylesheet" href="css/tailwind.min.css" />
-    <link rel="stylesheet" href="js/pdfjs/web/viewer.css" />
+    <link rel="stylesheet" href="js/pdfjs-legacy/web/viewer.css" />
     <link rel="stylesheet" href="css/mobile-viewer.css" />
-    <script src="js/compatibility.js"></script>
-    <script type="module" src="js/pdfjs/build/pdf.mjs"></script>
-    <script type="module" src="js/pdfjs/web/viewer.mjs"></script>
+    <script type="module" src="js/pdfjs-legacy/build/pdf.mjs"></script>
+    <script type="module" src="js/pdfjs-legacy/web/viewer.mjs"></script>
   </head>
 
   <body>
@@ -36,6 +35,6 @@
       <button class="toolbarButton zoomIn" title="Zoom In" id="zoomIn"></button>
     </footer>
 
-     <script src="js/mobile-viewer.mjs" type="module"></script>
+     <script src="js/mobile-legacy-viewer.mjs" type="module"></script>
   </body>
 </html>
