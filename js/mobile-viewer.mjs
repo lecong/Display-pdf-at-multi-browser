@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-if (!pdfjsLib.getDocument || !pdfjsViewer.PDFViewer) {
+if (!pdfjsLib.getDocument) {
   // eslint-disable-next-line no-alert
   alert("Please build the pdfjs-dist library using\n `gulp dist-install`");
 }

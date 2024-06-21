@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="css/tailwind.min.css" />
     <link rel="stylesheet" href="js/pdfjs/web/viewer.css" />
     <link rel="stylesheet" href="css/mobile-viewer.css" />
-    <script src="js/compatibility.js"></script>
+    <!-- <script src="js/compatibility.js"></script> -->
     <script type="module" src="js/pdfjs/build/pdf.mjs"></script>
-    <script type="module" src="js/pdfjs/web/viewer.mjs"></script>
   </head>
 
   <body>
@@ -27,15 +26,124 @@
     </div>
 
     <footer>
-      <button class="toolbarButton pageUp" title="Previous Page" id="previous"></button>
-      <button class="toolbarButton pageDown" title="Next Page" id="next"></button>
+      <button
+        class="toolbarButton pageUp"
+        title="Previous Page"
+        id="previous"
+      ></button>
+      <button
+        class="toolbarButton pageDown"
+        title="Next Page"
+        id="next"
+      ></button>
 
-      <input type="number" id="pageNumber" class="toolbarField pageNumber" value="1" size="4" min="1">
+      <input
+        type="number"
+        id="pageNumber"
+        class="toolbarField pageNumber"
+        value="1"
+        size="4"
+        min="1"
+      />
 
-      <button class="toolbarButton zoomOut" title="Zoom Out" id="zoomOut"></button>
+      <button
+        class="toolbarButton zoomOut"
+        title="Zoom Out"
+        id="zoomOut"
+      ></button>
       <button class="toolbarButton zoomIn" title="Zoom In" id="zoomIn"></button>
     </footer>
 
-     <script src="js/mobile-viewer.mjs" type="module"></script>
+    <script>
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "js/pdfjs/build/pdf.worker.mjs";
+
+      var isRenderCompleted = false;
+      var isRendering = {};
+      var pdfDoc = null;
+      var totalPage = 0;
+
+      function renderPage(num) {
+        isRendering[num] = true;
+        // Using promise to fetch the page
+        pdfDoc.getPage(num).then(function (/** @type {any} **/ page) {
+          const canvas = document.createElement("canvas");
+
+          let viewport = page.getViewport({ scale: scale, rotation });
+          const canvasContext = canvas.getContext("2d");
+
+          // Support HiDPI-screens.
+          var outputScale = window.devicePixelRatio || 1;
+
+          canvas.width = Math.floor(viewport.width * outputScale);
+          canvas.height = Math.floor(viewport.height * outputScale);
+          canvas.style.width = Math.floor(viewport.width) + "px";
+          canvas.style.height = Math.floor(viewport.height) + "px";
+          canvas.imageSmoothingEnabled = false;
+
+          // Append the canvas to the DOM
+          document.getElementById("viewer").appendChild(canvas);
+
+          var transform =
+            outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+
+          // Render PDF page into canvas context
+          let renderContext = {
+            canvasContext,
+            transform,
+            viewport,
+          };
+          let renderTask = page.render(renderContext);
+
+          // Wait for rendering to finish
+          renderTask.promise.then(function () {
+            isRendering[num] = false;
+
+            if (num < totalPage) {
+              queueRenderPage(num + 1);
+            } else {
+              isRenderCompleted = true;
+            }
+          });
+        });
+      }
+
+      function queueRenderPage(num) {
+        if (isRendering[num] == undefined) {
+          renderPage(num);
+        }
+      }
+
+      function onPageLoaded() {
+        isRendering = {};
+        pdfDoc = null;
+
+        // load document
+        let loadingTask = pdfjsLib.getDocument({
+          url: "/Display-pdf-at-multi-browser/assets/sample.pdf",
+        });
+        loadingTask.promise
+          .then(async function (/** @type {any} */ pdfDoc_) {
+            pdfDoc = pdfDoc_;
+
+            totalPage = pdfDoc.numPages;
+            queueRenderPage(1);
+          })
+          .catch(function (/** @type {any} **/ error) {
+            console.log("Loading error: ", error);
+          });
+      }
+
+      function waitingPageLoaded(callback) {
+        if (document.readyState === "loading") {
+          // Loading hasn't finished yet
+          document.addEventListener("DOMContentLoaded", callback);
+        } else {
+          // `DOMContentLoaded` has already fired
+          callback();
+        }
+      }
+
+      waitingPageLoaded(onPageLoaded);
+    </script>
   </body>
 </html>
