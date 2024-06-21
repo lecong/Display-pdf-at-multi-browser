@@ -54,8 +54,7 @@
       <button class="toolbarButton zoomIn" title="Zoom In" id="zoomIn"></button>
     </footer>
 
-    <script>
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "js/pdfjs/build/pdf.worker.mjs";
+    <script type="module">
 
       var isRenderCompleted = false;
       var isRendering = {};
@@ -114,6 +113,8 @@
       }
 
       function onPageLoaded() {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "js/pdfjs/build/pdf.worker.mjs";
+
         isRendering = {};
         pdfDoc = null;
 
