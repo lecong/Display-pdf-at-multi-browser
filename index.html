@@ -13,7 +13,10 @@
         Using browser plugin
       </h1>
 
-      <p id="browser-plugin-description" class="font-normal text-gray-500 text-xs md:text-base mb-6"></p>
+      <p
+        id="browser-plugin-description"
+        class="font-normal text-gray-500 text-xs md:text-base mb-6"
+      ></p>
 
       <iframe class="w-full h-96" src="assets/sample.pdf"></iframe>
     </section>
@@ -29,8 +32,26 @@
         Using pdfjs
       </h1>
 
-      <embed id="embedPdfViwer" class="w-full h-96" src="/Display-pdf-at-multi-browser/assets/sample.pdf" type="application/pdf" onerror="showFileWithPdfjs">
-      <iframe id="pdfjsViwerFrame" class="w-full h-96 hidden" src="js/pdfjs/web/viewer.html?file=/Display-pdf-at-multi-browser/assets/sample.pdf&pdfbug=all"></iframe>
+      <object
+        id="objectPdfViwer"
+        class="w-full h-96"
+        data="/Display-pdf-at-multi-browser/assets/sample.pdf"
+        type="application/pdf"
+        onload="objectPdfViwerLoaded"
+        onerror="objectPdfViwerErrored"
+      ></object>
+      <embed
+        id="embedPdfViwer"
+        class="w-full h-96"
+        src="/Display-pdf-at-multi-browser/assets/sample.pdf"
+        onload="embedPdfViwerLoaded"
+        onerror="embedPdfViwerErrored"
+      />
+      <iframe
+        id="pdfjsViwerFrame"
+        class="w-full h-96 hidden"
+        src="js/pdfjs/web/viewer.html?file=/Display-pdf-at-multi-browser/assets/sample.pdf&pdfbug=all"
+      ></iframe>
     </section>
     <section class="py-4 md:py-6">
       <h1 class="font-medium text-gray-700 text-3xl md:text-4xl mb-1">
@@ -44,7 +65,11 @@
         Using pdfjs-legacy
       </h1>
 
-      <iframe class="w-full h-96" src="js/pdfjs-legacy/web/viewer.html?file=/Display-pdf-at-multi-browser/assets/sample.pdf&pdfbug=all"></iframe>
+      <iframe
+        class="w-full h-96"
+        src="js/pdfjs-legacy/web/viewer.html?file=/Display-pdf-at-multi-browser/assets/sample.pdf&pdfbug=all"
+      >
+      </iframe>
     </section>
     <section class="py-4 md:py-6">
       <h1 class="font-medium text-gray-700 text-3xl md:text-4xl mb-1">
@@ -64,31 +89,46 @@
       if (navigator.pdfViewerEnabled) {
         pdfViewerEnabled = "Browser enabled PDF Viewer";
       }
-      const description = document.getElementById('browser-plugin-description');
+      const description = document.getElementById("browser-plugin-description");
       if (description) {
         description.innerHTML = `${pdfViewerPlugin}<br />${pdfViewerEnabled}`;
       }
     }
 
     function initGoogleViewer() {
-      const googleViewer = document.getElementById('google-viewer');
+      const googleViewer = document.getElementById("google-viewer");
       if (googleViewer) {
         googleViewer.src = `https://docs.google.com/gview?url=${location.origin}/Display-pdf-at-multi-browser/assets/sample.pdf`;
       }
     }
 
+    function objectPdfViwerLoaded() {
+      console.log("objectPdfViwerLoaded");
+    }
+
+    function objectPdfViwerErrored() {
+      console.log("objectPdfViwerErrored");
+    }
+
+    function embedPdfViwerLoaded() {
+      console.log("embedPdfViwerLoaded");
+    }
+
+    function embedPdfViwerErrored() {
+      console.log("embedPdfViwerErrored");
+    }
+
     function showFileWithPdfjs(e) {
       console.log("showFileWithPdfjs", e);
-      
-      const embedPdfViwer = document.getElementById('embedPdfViwer');
+
+      const embedPdfViwer = document.getElementById("embedPdfViwer");
       if (embedPdfViwer) {
         embedPdfViwer.classList.add("hidden");
       }
-      const pdfjsViwerFrame = document.getElementById('pdfjsViwerFrame');
+      const pdfjsViwerFrame = document.getElementById("pdfjsViwerFrame");
       if (pdfjsViwerFrame) {
         pdfjsViwerFrame.classList.remove("hidden");
       }
-
     }
 
     function onPageLoaded() {
